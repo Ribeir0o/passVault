@@ -1,4 +1,3 @@
-// Update with your config settings.
 require("dotenv").config();
 
 module.exports = {
@@ -6,9 +5,10 @@ module.exports = {
   development: {
     client: "mysql2",
     connection: {
+      host: "172.20.0.3",
       database: "passmngr",
       user: "root",
-      password: process.env.MYSQL_PASSWORD,
+      password: process.env.MYSQL_ROOT_PASSWORD,
     },
     migrations: {
       directory: "./db/migrations",
