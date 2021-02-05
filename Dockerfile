@@ -1,14 +1,14 @@
-FROM node:alpine
+FROM node:14
 
 WORKDIR /app/passmngr
 
 COPY package.json ./
 COPY yarn.lock ./
 
-RUN npm install
+RUN yarn
 
 COPY . .
 
 EXPOSE 8080
 
-CMD [ "npm","run", "dev" ]
+CMD ["yarn",  "dev"]

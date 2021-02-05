@@ -5,7 +5,7 @@ module.exports = {
   development: {
     client: "mysql2",
     connection: {
-      host: "172.20.0.3",
+      host: process.env.MYSQL_HOST,
       database: "passmngr",
       user: "root",
       password: process.env.MYSQL_ROOT_PASSWORD,
@@ -21,7 +21,7 @@ module.exports = {
     client: "sqlite3",
     useNullAsDefault: true,
     connection: {
-      filename: ":memory:",
+      filename: "./test.sqlite",
     },
     migrations: {
       directory: "./db/migrations",
