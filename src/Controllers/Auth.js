@@ -12,13 +12,17 @@ class AuthController {
         .json(messages.emptyField);
     }
 
-    const user = await User.findByEmail(email);
-    if (!user) {
+    try {
+      const user = await User.findByEmail(email);
+      if (user) {
+        return res.status(messages.emailAlreadyExists.status).json(messages.emailAlreadyExists);
+      }
       const hashedPassword = await hash(password);
       await User.create(email, hashedPassword);
       return res.sendStatus(201);
+    } catch (e) {
+      return res.sendStatus(500);
     }
-    return res.status(messages.emailAlreadyExists.status).json(messages.emailAlreadyExists);
   }
 }
 

@@ -5,7 +5,7 @@
   "author": "thiago ribeiro <thiagogr71@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "yarn nodemon src/index.js",
+    "dev": "nodemon src/index.js",
     "start": "node src/index.js",
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
