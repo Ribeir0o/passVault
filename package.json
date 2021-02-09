@@ -10,7 +10,9 @@
     "migrate": "knex migrate:latest",
     "rollback": "knex migrate:rollback",
     "seed": "knex seed:run",
-    "test": "jest --forceExit --detectOpenHandles"
+    "test": "jest --forceExit --detectOpenHandles",
+    "test:unit": "jest src/*",
+    "test:integration": "jest __test__/integration/* --forceExit --detectOpenHandles"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
