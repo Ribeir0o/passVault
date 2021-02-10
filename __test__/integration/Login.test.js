@@ -29,7 +29,7 @@ describe("POST /login", () => {
   it("Should return a Cookie with the jwt", async (done) => {
     const res = await supertest(app)
       .post("/api/v1/login")
-      .send({ email: "thiagogr71@gmail.com", password: "strongPassword" })
+      .send({ email: "thiagogr71@gmail.com", password: "strongPassword1" })
       .expect(200);
     expect(res.headers["set-cookie"]).toEqual(
       expect.arrayContaining([

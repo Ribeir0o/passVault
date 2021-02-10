@@ -31,7 +31,7 @@ describe("POST /account", () => {
   });
   it("Should return 201 if the user was created", async (done) => {
     const user = {
-      email: "thiagog.r@hotmail.com",
+      email: "email@hotmail.com",
       password: "123987",
     };
     await supertest(app)
