@@ -8,6 +8,10 @@ class Password {
   findById(id) {
     return knex("passwords").select("site", "user_id", "password").where({ id }).first();
   }
+
+  deleteById(id) {
+    return knex("passwords").where({ id }).delete();
+  }
 }
 
 module.exports = new Password();

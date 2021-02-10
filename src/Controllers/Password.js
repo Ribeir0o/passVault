@@ -43,6 +43,30 @@ class PasswordController {
       return res.sendStatus(500);
     }
   }
+
+  async deletePassword(req, res) {
+    const { email } = req;
+    const { id } = req.params;
+
+    // eslint-disable-next-line
+    if (isNaN(id)) return res.status(messages.idMustBeNumber.status).json(messages.idMustBeNumber);
+
+    try {
+      const password = await Password.findById(id);
+      const user = await User.findByEmail(email);
+
+      if (user.id !== password.user_id) {
+        return res
+          .status(messages.idNotFound.status)
+          .json(messages.idNotFound);
+      }
+
+      await Password.deleteById(id);
+      return res.sendStatus(200);
+    } catch (e) {
+      return res.sendStatus(500);
+    }
+  }
 }
 
 module.exports = new PasswordController();
