@@ -4,6 +4,7 @@ const messages = require("../../src/constants/errorMessages");
 const { sign } = require("../../src/lib/jwt");
 const passwords = require("../../src/constants/passwords");
 const Password = require("../../src/Models/Password");
+const { decrypt } = require("../../src/lib/cryptoUtil");
 
 const token = sign("thiagogr71@gmail.com");
 
@@ -93,6 +94,49 @@ describe("DELETE /password/:id", () => {
 
     const pass = await Password.findById(2);
     expect(pass).toBeUndefined();
+    done();
+  });
+});
+describe("PUT /password/:id", () => {
+  it("Should return an error saying that the id must be number", async (done) => {
+    const res = await supertest(app)
+      .put("/api/v1/password/passId")
+      .set("Authorization", `Bearer ${token}`)
+      .expect(messages.idMustBeNumber.status);
+
+    expect(res.body).toMatchObject(messages.idMustBeNumber);
+    done();
+  });
+
+  it("Should return an error saying that the id was not found", async (done) => {
+    const payload = {
+      newPassword: "novaSenha",
+      site: "https://facebook.com",
+    };
+    const res = await supertest(app)
+      .put("/api/v1/password/3")
+      .set("Authorization", `Bearer ${token}`)
+      .send(payload)
+      .expect(messages.idNotFound.status);
+
+    expect(res.body).toMatchObject(messages.idNotFound);
+    done();
+  });
+
+  it("Should return 200 and delete password", async (done) => {
+    const payload = {
+      newPassword: "novaSenha",
+      site: "https://facebook.com",
+    };
+
+    await supertest(app)
+      .put("/api/v1/password/1")
+      .set("Authorization", `Bearer ${token}`)
+      .send(payload)
+      .expect(200);
+
+    const { password } = await Password.findById(1);
+    expect(decrypt(password)).toEqual(payload.newPassword);
     done();
   });
 });

@@ -67,6 +67,38 @@ class PasswordController {
       return res.sendStatus(500);
     }
   }
+
+  async putPassword(req, res) {
+    const { email } = req;
+    const { newPassword, site } = req.body;
+    const { id } = req.params;
+
+    // eslint-disable-next-line
+    if (isNaN(id)) return res.status(messages.idMustBeNumber.status).json(messages.idMustBeNumber);
+
+    if (!newPassword || !site) {
+      return res
+        .status(messages.emptyField.status)
+        .json(messages.emptyField);
+    }
+
+    try {
+      const password = await Password.findById(id);
+      const user = await User.findByEmail(email);
+
+      if (user.id !== password.user_id) {
+        return res
+          .status(messages.idNotFound.status)
+          .json(messages.idNotFound);
+      }
+      const encryptedNewPass = encrypt(newPassword);
+      await Password.updateById(id, encryptedNewPass, site);
+      return res.sendStatus(200);
+    } catch (e) {
+      console.error(e);
+      return res.sendStatus(500);
+    }
+  }
 }
 
 module.exports = new PasswordController();

@@ -12,6 +12,10 @@ class Password {
   deleteById(id) {
     return knex("passwords").where({ id }).delete();
   }
+
+  updateById(id, newPassword, site) {
+    return knex("passwords").where({ id }).update({ password: newPassword, site });
+  }
 }
 
 module.exports = new Password();
