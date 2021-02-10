@@ -16,6 +16,10 @@ class Password {
   updateById(id, newPassword, site) {
     return knex("passwords").where({ id }).update({ password: newPassword, site });
   }
+
+  findAll(userId) {
+    return knex("passwords").select().where({ user_id: userId });
+  }
 }
 
 module.exports = new Password();

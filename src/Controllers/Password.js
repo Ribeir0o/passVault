@@ -44,6 +44,24 @@ class PasswordController {
     }
   }
 
+  async getAllPasswords(req, res) {
+    const { email } = req;
+
+    try {
+      const user = await User.findByEmail(email);
+      let passwords = await Password.findAll(user.id);
+      passwords = passwords.map((value) => {
+        const decryptedPass = decrypt(value.password);
+        // eslint-disable-next-line
+        value.password = decryptedPass;
+        return value;
+      });
+      return res.status(200).json(passwords);
+    } catch (e) {
+      return res.sendStatus(500);
+    }
+  }
+
   async deletePassword(req, res) {
     const { email } = req;
     const { id } = req.params;

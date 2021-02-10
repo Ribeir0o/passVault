@@ -8,6 +8,21 @@ const { decrypt } = require("../../src/lib/cryptoUtil");
 
 const token = sign("thiagogr71@gmail.com");
 
+describe("GET /passwords", () => {
+  it("Should return an array with the site/password from a given user", async (done) => {
+    const res = await supertest(app)
+      .get("/api/v1/passwords")
+      .set("Authorization", `Bearer ${token}`)
+      .expect(200);
+
+    expect(res.body).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ user_id: 2 }),
+      ]),
+    );
+    done();
+  });
+});
 describe("GET /password/:id", () => {
   it("Should return an error saying that the id must be number", async (done) => {
     const res = await supertest(app)
